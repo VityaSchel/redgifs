@@ -120,6 +120,7 @@ bot.on('message', async e => {
     '/lesbi',
     '/yaoi',
     '/яой',
+    '/jucroq'
   ]
   if(!commands.includes(text)) return
   else {
@@ -200,9 +201,9 @@ bot.on('message', async e => {
         medias = await load('yaoi', 'pushshift')
         break
 
-      // case '/gore':
-      //   medias = await load('gore', 'pushshift')
-      //   break
+      case '/jucroq':
+        medias = await load('monkeys', 'pushshift')
+        break
 
       case '/gore':
       case '/cp':
