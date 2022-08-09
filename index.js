@@ -84,6 +84,19 @@ async function reddit(subreddit, source = 'reddit') {
   return mediaURL
 }
 
+async function stat(key) {
+  const file = await fs.readFile('stats.json', 'utf-8')
+  let stats = {}
+  try {
+    stats = JSON.parse(file) ?? {}
+  } catch(e) {
+    console.error('Oh no! Error while reading stas', file)
+  }
+  const current = Number(stats[key])
+  stats[key] = Number.isInteger(current) ? current + 1 : 1
+  await fs.writeFile('stats.json', JSON.stringify(stats))
+}
+
 bot.on('message', async e => {
   let medias = [], indicator
 
@@ -139,22 +152,26 @@ bot.on('message', async e => {
   try {
     switch(text) {
       case '/trap':
+        await stat('trap')
         medias = await load('tgirls')
         break
 
       case '/_trap':
       // case '/trap':
+        await stat('trap')
         medias = await load('tgirls', 'pushshift')
         break
 
       case '/govno':
       case '/gavno':
+        await stat('govno')
         medias = await load('poop')
         break
 
       case '/_govno':
       // case '/govno':
       // case '/gavno':
+        await stat('govno')
         medias = await load('poop', 'pushshift')
         break
 
@@ -162,6 +179,7 @@ bot.on('message', async e => {
       case '/hui':
       case '/chlen':
       case '/pisun':
+        await stat('penis')
         medias = await load('sounding', 'pushshift')
         break
 
@@ -170,44 +188,53 @@ bot.on('message', async e => {
       case '/pidoras':
       case '/pidaras':
       case '/gay':
+        await stat('gay')
         medias = await load('gaybrosgonewild', 'pushshift')
         break
 
       case '/bdsm':
+        await stat('bdsm')
         medias = await load('BDSM')
         break
 
       case '/_bdsm':
       // case '/bdsm':
+        await stat('bdsm')
         medias = await load('BDSM', 'pushshift')
         break
 
       case '/anime':
       case '/hentai':
+        await stat('anime')
         medias = await load('neko', 'waifupics')
         break
 
       case '/furry':
+        await stat('furry')
         medias = await load('yiff', 'pushshift')
         break
 
       case '/lesb':
       case '/lesbi':
+        await stat('lesbi')
         medias = await load('lesbians', 'pushshift')
         break
 
       case '/yaoi':
       case '/яой':
+        await stat('yaoi')
         medias = await load('yaoi', 'pushshift')
         break
 
       case '/jucroq':
+        await stat('jucroq')
         medias = await load('monkeys', 'pushshift')
         break
 
       case '/gore':
       case '/cp':
       case '/zoo':
+        await stat('cp_zoo_gore')
         loadingPool[e.from.id] = false
         await bot.sendPhoto(e.chat.id, 'AgACAgIAAxkBAAIBaWLyQThnCfAr1IyAX6pB7eII25QBAAJIvjEbuvGZS1B96ifqkC_1AQADAgADeAADKQQ', { reply_to_message_id: e.message_id })
         return
