@@ -1,0 +1,6 @@
+--2022-08-09 15:32:11--  https://api.pushshift.io/reddit/search/submission/?q=*
+Resolving api.pushshift.io (api.pushshift.io)... 104.21.55.251, 172.67.174.211, 2606:4700:3032::ac43:aed3, ...
+Connecting to api.pushshift.io (api.pushshift.io)|104.21.55.251|:443... connected.
+HTTP request sent, awaiting response... 522 
+2022-08-09 15:32:36 ERROR 522: (no description).
+
