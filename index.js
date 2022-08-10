@@ -139,7 +139,10 @@ bot.on('message', async e => {
   if(e.forward_from || e.forward_date || e.forward_sender_name) return
   if (text.endsWith('@citinezpidorasbot')) text = text.match(/^(.*)@citinezpidorasbot$/)[1]
 
-  if(text === '/pornstats') return await statsGet()
+  if(text === '/pornstats') {
+    await bot.sendMessage(e.chat.id, await statsGet(), { reply_to_message_id: e.message_id })
+    return
+  }
 
   const commands = [
     '/trap',
