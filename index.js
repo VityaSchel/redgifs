@@ -2,6 +2,7 @@ import './.env.js'
 import fetch from 'node-fetch'
 import tgbot from 'node-telegram-bot-api'
 import fs from 'fs/promises'
+import $D from 'dedent'
 
 const loadingPool = {}
 
@@ -97,6 +98,38 @@ async function stat(key) {
   await fs.writeFile('stats.json', JSON.stringify(stats))
 }
 
+async function statsGet() {
+  const statsFile = await fs.readFile('stats.json', 'utf-8')
+  let stats = {}
+  try {
+    stats = JSON.parse(statsFile)
+  } catch(e) {
+    console.error(e)
+  }
+  // trap, govno, penis, gay, bdsm, anime, furry, lesbi, yaoi, jucroq, cp_zoo_gore,
+  // milf, asians, bigboobs, swingers, latex, feet, selffuck
+  return $D`Статистика по боту (вызов команд):
+    Трапы: ${stats.trap ?? 0}
+    Какашки: ${stats.govno ?? 0}
+    Пенис: ${stats.penis ?? 0}
+    Геи: ${stats.gay ?? 0}
+    БДСМ: ${stats.bdsm ?? 0}
+    Хентай: ${stats.anime ?? 0}
+    Фурри: ${stats.furry ?? 0}
+    Лесби: ${stats.lesbi ?? 0}
+    Яой: ${stats.yaoi ?? 0}
+    Jucroq: ${stats.jucroq ?? 0}
+    cp/zoo/gore: ${stats.cp_zoo_gore ?? 0}
+    Милфы: ${stats.milf ?? 0}
+    Азиатки: ${stats.asians ?? 0}
+    Большие сиськи: ${stats.bigboobs ?? 0}
+    Свингеры: ${stats.swingers ?? 0}
+    Девушки в латексе: ${stats.latex ?? 0}
+    Футфетиш: ${stats.feet ?? 0}
+    Самотрах: ${stats.selffuck ?? 0}
+  `
+}
+
 bot.on('message', async e => {
   let medias = [], indicator
 
@@ -105,6 +138,8 @@ bot.on('message', async e => {
   if (!e.from?.id) return
   if(e.forward_from || e.forward_date || e.forward_sender_name) return
   if (text.endsWith('@citinezpidorasbot')) text = text.match(/^(.*)@citinezpidorasbot$/)[1]
+
+  if(text === '/pornstats') return await statsGet()
 
   const commands = [
     '/trap',
@@ -133,7 +168,14 @@ bot.on('message', async e => {
     '/lesbi',
     '/yaoi',
     '/яой',
-    '/jucroq'
+    '/jucroq',
+    '/milf',
+    '/asians',
+    '/bigboobs',
+    '/swingers',
+    '/latex',
+    '/feet',
+    '/selffuck'
   ]
   if(!commands.includes(text)) return
   else {
@@ -238,6 +280,42 @@ bot.on('message', async e => {
         loadingPool[e.from.id] = false
         await bot.sendPhoto(e.chat.id, 'AgACAgIAAxkBAAIBaWLyQThnCfAr1IyAX6pB7eII25QBAAJIvjEbuvGZS1B96ifqkC_1AQADAgADeAADKQQ', { reply_to_message_id: e.message_id })
         return
+
+      case '/milf':
+        await stat('milf')
+        medias = await load('milf', 'pushshift')
+        break
+
+      case '/asians':
+        await stat('asians')
+        medias = await load('asiansgonewild', 'pushshift')
+        break
+
+      case '/bigboobs':
+        await stat('bigboobs')
+        medias = await load('bigboobsgw', 'pushshift')
+        break
+
+      case '/swingers':
+        await stat('swingers')
+        medias = await load('swingersgw', 'pushshift')
+        break
+
+      case '/latex':
+        await stat('latex')
+        medias = await load('yogapants', 'pushshift')
+        break
+
+      case '/feet':
+        await stat('feet')
+        medias = await load('feet', 'pushshift')
+        break
+
+      case '/selffuck':
+        await stat('selffuck')
+        medias = await load('selffuck', 'pushshift')
+        break
+
     }
     for (let media of medias.slice(0, 1)) {
       if (['.png', '.jpg', '.jpeg'].some(extension => media.endsWith(extension))) {
