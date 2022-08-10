@@ -120,7 +120,7 @@ async function statsGet() {
       [stats.lesbi ?? 0, 'Лесби'],
       [stats.yaoi ?? 0, 'Яой'],
       [stats.jucroq ?? 0, 'Jucroq'],
-      [stats.cp_zoo_gore ?? 0, cp/zoo/'gore'],
+      [stats.cp_zoo_gore ?? 0, 'cp/zoo/gore'],
       [stats.milf ?? 0, 'Милфы'],
       [stats.asians ?? 0, 'Азиатки'],
       [stats.bigboobs ?? 0, 'Большие сиськи'],
