@@ -109,24 +109,26 @@ async function statsGet() {
   // trap, govno, penis, gay, bdsm, anime, furry, lesbi, yaoi, jucroq, cp_zoo_gore,
   // milf, asians, bigboobs, swingers, latex, feet, selffuck
   return $D`Статистика по боту (вызов команд):
-    Трапы: ${stats.trap ?? 0}
-    Какашки: ${stats.govno ?? 0}
-    Пенис: ${stats.penis ?? 0}
-    Геи: ${stats.gay ?? 0}
-    БДСМ: ${stats.bdsm ?? 0}
-    Хентай: ${stats.anime ?? 0}
-    Фурри: ${stats.furry ?? 0}
-    Лесби: ${stats.lesbi ?? 0}
-    Яой: ${stats.yaoi ?? 0}
-    Jucroq: ${stats.jucroq ?? 0}
-    cp/zoo/gore: ${stats.cp_zoo_gore ?? 0}
-    Милфы: ${stats.milf ?? 0}
-    Азиатки: ${stats.asians ?? 0}
-    Большие сиськи: ${stats.bigboobs ?? 0}
-    Свингеры: ${stats.swingers ?? 0}
-    Девушки в латексе: ${stats.latex ?? 0}
-    Футфетиш: ${stats.feet ?? 0}
-    Самотрах: ${stats.selffuck ?? 0}
+    ${[
+      [stats.trap ?? 0, 'Трапы'],
+      [stats.govno ?? 0, 'Какашки'],
+      [stats.penis ?? 0, 'Пенис'],
+      [stats.gay ?? 0, 'Геи'],
+      [stats.bdsm ?? 0, 'БДСМ'],
+      [stats.anime ?? 0, 'Хентай'],
+      [stats.furry ?? 0, 'Фурри'],
+      [stats.lesbi ?? 0, 'Лесби'],
+      [stats.yaoi ?? 0, 'Яой'],
+      [stats.jucroq ?? 0, 'Jucroq'],
+      [stats.cp_zoo_gore ?? 0, cp/zoo/'gore'],
+      [stats.milf ?? 0, 'Милфы'],
+      [stats.asians ?? 0, 'Азиатки'],
+      [stats.bigboobs ?? 0, 'Большие сиськи'],
+      [stats.swingers ?? 0, 'Свингеры'],
+      [stats.latex ?? 0, 'Девушки в латексе'],
+      [stats.feet ?? 0, 'Футфетиш'],
+      [stats.selffuck ?? 0, 'Самотрах'],
+    ].sort((a,b) => b[0] - a[0]).map(([stat, key]) => `${key}: ${stat}`).join('\n')}
   `
 }
 
