@@ -4,6 +4,7 @@ import fs from 'fs/promises'
 import $D from 'dedent'
 import { deleteMessage, editMessageText, sendMessage, sendPhoto, sendVideo } from './mocks'
 import { HELP_MESSAGE } from './data/consts'
+import { isTimeout, resetTimeout } from './timeoutManager.js'
 
 const loadingPool = {}
 
@@ -159,12 +160,23 @@ export async function newMessage(message) {
 
   if (!issuerID) return false
 
+  const timeoutMiddleware = () => {
+    if (isTimeout()) {
+      return false
+    } else {
+      resetTimeout()
+      return true
+    }
+  }
+
   if(text === '/pornstats') {
+    if (!timeoutMiddleware()) return
     await sendMessage(await statsGet(), message.id)
     return
   }
 
   if(text === '/help') {
+    if (!timeoutMiddleware()) return
     await sendMessage(HELP_MESSAGE, message.id)
     return
   }
@@ -207,11 +219,16 @@ export async function newMessage(message) {
   ]
   
   if (!commands.includes(text)) return
+
+  if (!timeoutMiddleware()) return
   
   let indicator
-
   
-  if (message.from_id.id === 1335709879) return await sendMessage('Пошел нахуй, обезьяна', message.id)
+  if (message.from_id.id === 1335709879) {
+    await sendMessage('Пошел нахуй, обезьяна', message.id)
+    return
+  }
+
   if (loadingPool[issuerID]) {
     await sendMessage('Подожди пока загрузится предыдущий запрос', message.id)
     return

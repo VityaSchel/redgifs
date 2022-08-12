@@ -3,7 +3,7 @@ import MTProto from '@mtproto/core'
 import authorize from './mtproto/auth'
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
-import { initSettings, settings } from './settings'
+import { initSettings } from './settings'
 import { newMessage } from './scraper'
 
 const __dirname = dirname(fileURLToPath(import.meta.url)) + '/'
@@ -17,10 +17,6 @@ const bot = new MTProto({
 global.api = bot
 const user = await authorize()
 console.log(`Пользователь ${user.users[0].first_name} авторизирован, бот начинает работу`)
-
-const timeouts: { [key: string]: number } = {
-  respondedToUser: 0
-}
 
 
 await initSettings()
@@ -48,12 +44,6 @@ async function checkLatestDialogs(events) {
       if (message.fwd_from) continue // includes hidden users
       const text = message.message
       if(!text) continue
-
-      if (Date.now() - timeouts.respondedToUser < settings.globalCommandTimeout * 1000) {
-        continue
-      } else {
-        timeouts.respondedToUser = Date.now()
-      }
       
       try {
         await newMessage(message)
