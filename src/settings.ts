@@ -11,7 +11,7 @@ export const settings = {
   /**
    * Global timeout for commands (in seconds)
    */
-  globalCommandTimeout: 5
+  globalCommandTimeout: 7
 }
 
 export async function initSettings() {

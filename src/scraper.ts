@@ -3,6 +3,7 @@ import fetch from 'node-fetch'
 import fs from 'fs/promises'
 import $D from 'dedent'
 import { deleteMessage, editMessageText, sendMessage, sendPhoto, sendVideo } from './mocks'
+import { HELP_MESSAGE } from './data/consts'
 
 const loadingPool = {}
 
@@ -160,6 +161,11 @@ export async function newMessage(message) {
 
   if(text === '/pornstats') {
     await sendMessage(await statsGet(), message.id)
+    return
+  }
+
+  if(text === '/help') {
+    await sendMessage(HELP_MESSAGE, message.id)
     return
   }
 
