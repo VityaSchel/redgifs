@@ -1,0 +1,22 @@
+diff --git a/node_modules/node-fetch/@types/index.d.ts b/node_modules/node-fetch/@types/index.d.ts
+index 2374801..9a60de0 100644
+--- a/node_modules/node-fetch/@types/index.d.ts
++++ b/node_modules/node-fetch/@types/index.d.ts
+@@ -121,7 +121,7 @@ export type BodyInit =
+ 	| Blob
+ 	| Buffer
+ 	| URLSearchParams
+-	| FormData
++	| typeof FormData
+ 	| NodeJS.ReadableStream
+ 	| string;
+ declare class BodyMixin {
+@@ -134,7 +134,7 @@ declare class BodyMixin {
+ 	/** @deprecated Use `body.arrayBuffer()` instead. */
+ 	buffer(): Promise<Buffer>;
+ 	arrayBuffer(): Promise<ArrayBuffer>;
+-	formData(): Promise<FormData>;
++	formData(): Promise<typeof FormData>;
+ 	blob(): Promise<Blob>;
+ 	json(): Promise<unknown>;
+ 	text(): Promise<string>;

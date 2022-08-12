@@ -1,0 +1,17 @@
+diff --git a/node_modules/fetch-blob/from.d.ts b/node_modules/fetch-blob/from.d.ts
+index 530b99b..dc9d621 100644
+--- a/node_modules/fetch-blob/from.d.ts
++++ b/node_modules/fetch-blob/from.d.ts
+@@ -17,10 +17,10 @@ export function blobFrom(path: string, type?: string): Promise<Blob>;
+  * @param {string} [type] mimetype to use
+  * @returns {Promise<File>}
+  */
+-export function fileFrom(path: string, type?: string): Promise<File>;
++export function fileFrom(path: string, type?: string): Promise<typeof File>;
+ /**
+  * @param {string} path filepath on the disk
+  * @param {string} [type] mimetype to use
+  */
+-export function fileFromSync(path: string, type?: string): File;
++export function fileFromSync(path: string, type?: string): typeof File;
+ export { File, Blob };

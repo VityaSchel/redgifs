@@ -1,0 +1,13 @@
+diff --git a/node_modules/formdata-polyfill/esm.min.d.ts b/node_modules/formdata-polyfill/esm.min.d.ts
+index b45f42e..0e15231 100644
+--- a/node_modules/formdata-polyfill/esm.min.d.ts
++++ b/node_modules/formdata-polyfill/esm.min.d.ts
+@@ -1,5 +1,5 @@
+ export declare const FormData: {
+-  new (): FormData;
+-  prototype: FormData;
++  new (): typeof FormData;
++  prototype: typeof FormData;
+ };
+-export declare function formDataToBlob(formData: FormData): Blob;
++export declare function formDataToBlob(formData: typeof FormData): Blob;
