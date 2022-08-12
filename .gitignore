@@ -82,6 +82,8 @@ typings/
 .nuxt
 dist
 
+out
+
 # Gatsby files
 .cache/
 # Comment in the public line in if your project uses Gatsby and *not* Next.js
@@ -106,3 +108,5 @@ dist
 test.json
 
 stats.json
+
+tempdata.json

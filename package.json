@@ -4,6 +4,10 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
+    "start": "node out/index",
+    "prebuild": "del out/",
+    "build": "ttsc",
+    "postbuild": "cpy '**/*' '!**/*.ts' '../out' --cwd=src --no-overwrite --parents",
     "archive": "git archive --format zip -o ../redgifs.zip HEAD",
     "upload": "scp ../redgifs.zip utidteam.com:/var/www/redgifs.zip"
   },
@@ -11,9 +15,21 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@mtproto/core": "^6.2.0",
     "dedent": "^0.7.0",
     "dotenv": "^16.0.1",
     "node-fetch": "^3.2.10",
-    "node-telegram-bot-api": "^0.58.0"
+    "node-telegram-bot-api": "^0.58.0",
+    "readline-sync": "^1.4.10"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.33.0",
+    "@typescript-eslint/parser": "^5.33.0",
+    "eslint": "^8.21.0",
+    "@zoltu/typescript-transformer-append-js-extension": "^1.0.1",
+    "cpy-cli": "^3.1.1",
+    "del-cli": "^4.0.1",
+    "ttypescript": "^1.5.13",
+    "typescript": "^4.7.4"
   }
 }
