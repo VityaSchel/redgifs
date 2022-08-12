@@ -110,3 +110,5 @@ test.json
 stats.json
 
 tempdata.json
+
+.DS_Store
