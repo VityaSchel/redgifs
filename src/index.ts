@@ -3,9 +3,7 @@ import MTProto from '@mtproto/core'
 import authorize from './mtproto/auth'
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
-import { ЗАПРЕЩЕННЫЙ_ПЯТОЧЕК_CHANNEL_ID } from './data/consts'
-import { sendMessage } from './mocks'
-import { initSettings } from './settings'
+import { initSettings, settings } from './settings'
 import { newMessage } from './scraper'
 
 const __dirname = dirname(fileURLToPath(import.meta.url)) + '/'
@@ -50,6 +48,12 @@ async function checkLatestDialogs(events) {
       if (message.fwd_from) continue // includes hidden users
       const text = message.message
       if(!text) continue
+
+      if (Date.now() - timeouts.respondedToUser < settings.globalCommandTimeout * 1000) {
+        continue
+      } else {
+        timeouts.respondedToUser = Date.now()
+      }
       
       try {
         await newMessage(message)

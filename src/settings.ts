@@ -1,12 +1,17 @@
 import { ЗАПРЕЩЕННЫЙ_ПЯТОЧЕК_CHANNEL_ID, ЗАПРЕЩЕННЫЙ_ПЯТОЧЕК_ACCESS_HASH, TEST_CHANNEL_ID, TEST_ACCESS_HASH } from './data/consts'
 import fs from 'fs/promises'
 
-const settings = {
+export const settings = {
 
   /**
    * Resolve access hash from latest dialogs instead of using cached access_hash
    */
-  resolveAccessHash: false
+  resolveAccessHash: false,
+
+  /**
+   * Global timeout for commands (in seconds)
+   */
+  globalCommandTimeout: 5
 }
 
 export async function initSettings() {
