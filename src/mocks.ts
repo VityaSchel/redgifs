@@ -8,9 +8,9 @@ const mtProtoTargetPeer = () => ({
   access_hash: global.api.TARGET_CHANNEL_ACCESS_HASH
 })
 
-export async function sendMessage(text: string, replyMessageID?: number) {
+export async function sendMessage(text: string, replyMessageID?: number, chatID?: number) {
   if(settings.platform === 'bot') {
-    return await global.botapi.sendMessage(global.api.TARGET_CHANNEL_ID, text, replyMessageID && { reply_to_message_id: replyMessageID })
+    return await global.botapi.sendMessage(chatID ?? global.api.TARGET_CHANNEL_ID, text, replyMessageID && { reply_to_message_id: replyMessageID })
   } else {
     return await global.api.call('messages.sendMessage', {
       peer: mtProtoTargetPeer(),
@@ -21,9 +21,9 @@ export async function sendMessage(text: string, replyMessageID?: number) {
   }
 }
 
-export async function editMessageText(messageID: number, text: string) {
+export async function editMessageText(messageID: number, text: string, chatID?: number) {
   if(settings.platform === 'bot') {
-    return await global.botapi.editMessageText(text, { chat_id: global.api.TARGET_CHANNEL_ID, message_id: messageID })
+    return await global.botapi.editMessageText(text, { chat_id: chatID ?? global.api.TARGET_CHANNEL_ID, message_id: messageID })
   } else {
     return await global.api.call('messages.editMessage', {
       peer: mtProtoTargetPeer(),
@@ -33,9 +33,9 @@ export async function editMessageText(messageID: number, text: string) {
   }
 }
 
-export async function sendPhoto(photoURL: string, replyMessageID?: number) {
+export async function sendPhoto(photoURL: string, replyMessageID?: number, chatID?: number) {
   if(settings.platform === 'bot') {
-    return await global.botapi.sendPhoto(global.api.TARGET_CHANNEL_ID, photoURL, replyMessageID && { reply_to_message_id: replyMessageID })
+    return await global.botapi.sendPhoto(chatID ?? global.api.TARGET_CHANNEL_ID, photoURL, replyMessageID && { reply_to_message_id: replyMessageID })
   } else {
     return await global.api.call('messages.sendMedia', {
       peer: mtProtoTargetPeer(),
@@ -49,7 +49,7 @@ export async function sendPhoto(photoURL: string, replyMessageID?: number) {
   }
 }
 
-export async function sendVideo(videoURL: string, replyMessageID?: number) {
+export async function sendVideo(videoURL: string, replyMessageID?: number, chatID?: number) {
   if(settings.platform === 'bot') {
     return await global.botapi.sendVideo(global.api.TARGET_CHANNEL_ID, videoURL, replyMessageID && { reply_to_message_id: replyMessageID })
   } else {
@@ -65,9 +65,9 @@ export async function sendVideo(videoURL: string, replyMessageID?: number) {
   }
 }
 
-export async function deleteMessage(messageID: number) {
+export async function deleteMessage(messageID: number, chatID?: number) {
   if(settings.platform === 'bot') {
-    return await global.botapi.deleteMessage(global.api.TARGET_CHANNEL_ID, messageID)
+    return await global.botapi.deleteMessage(chatID ?? global.api.TARGET_CHANNEL_ID, messageID)
   } else {
     return await global.api.call('channels.deleteMessages', {
       channel: mtProtoTargetPeer(),

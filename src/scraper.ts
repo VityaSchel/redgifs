@@ -159,6 +159,7 @@ export async function newMessage(message) {
   const text: string = settings.platform === 'bot' ? message.text : message.message
   const issuerID: number = settings.platform === 'bot' ? message.from?.id : message.from_id?.user_id
   const messageID: number = settings.platform === 'bot' ? message.message_id : message.id
+  const chatID_onlyPresentIfBot: number | undefined = settings.platform === 'bot' ? message.chat.id : undefined
 
   if (!issuerID) return false
 
@@ -173,13 +174,13 @@ export async function newMessage(message) {
 
   if(text === '/pornstats') {
     if (!timeoutMiddleware()) return
-    await sendMessage(await statsGet(), messageID)
+    await sendMessage(await statsGet(), messageID, chatID_onlyPresentIfBot)
     return
   }
 
   if(text === '/help') {
     if (!timeoutMiddleware()) return
-    await sendMessage(HELP_MESSAGE, messageID)
+    await sendMessage(HELP_MESSAGE, messageID, chatID_onlyPresentIfBot)
     return
   }
 
@@ -227,20 +228,20 @@ export async function newMessage(message) {
   let indicator
   
   if (issuerID === 1335709879) {
-    await sendMessage('Пошел нахуй, обезьяна', messageID)
+    await sendMessage('Пошел нахуй, обезьяна', messageID, chatID_onlyPresentIfBot)
     return
   }
 
   if (loadingPool[issuerID]) {
-    await sendMessage('Подожди пока загрузится предыдущий запрос', messageID)
+    await sendMessage('Подожди пока загрузится предыдущий запрос', messageID, chatID_onlyPresentIfBot)
     return
   } else {
-    indicator = await sendMessage('Загрузка...', messageID)
+    indicator = await sendMessage('Загрузка...', messageID, chatID_onlyPresentIfBot)
   }
 
   const indicatorID: number | undefined = settings.platform === 'bot' ? indicator.message_id : indicator.updates?.find(update => update._ === 'updateMessageID')?.id
 
-  const error = () => indicatorID && editMessageText(indicatorID, 'Ошибка :(')
+  const error = () => indicatorID && editMessageText(indicatorID, 'Ошибка :(', chatID_onlyPresentIfBot)
 
   loadingPool[issuerID] = true
   let medias: string[] = []
@@ -331,7 +332,7 @@ export async function newMessage(message) {
       case '/zoo':
         await stat('cp_zoo_gore')
         loadingPool[issuerID] = false
-        await sendPhoto('AgACAgIAAxkBAAIBaWLyQThnCfAr1IyAX6pB7eII25QBAAJIvjEbuvGZS1B96ifqkC_1AQADAgADeAADKQQ', messageID)
+        await sendPhoto('AgACAgIAAxkBAAIBaWLyQThnCfAr1IyAX6pB7eII25QBAAJIvjEbuvGZS1B96ifqkC_1AQADAgADeAADKQQ', messageID, chatID_onlyPresentIfBot)
         return
 
       case '/milf':
@@ -370,11 +371,12 @@ export async function newMessage(message) {
         break
 
     }
-    for (const media of medias.slice(0, 1)) {
+    for (let media of medias.slice(0, 1)) {
+      media = media.split('?', 1)[0]
       if (['.png', '.jpg', '.jpeg'].some(extension => media.endsWith(extension))) {
-        await sendPhoto(media, messageID)
+        await sendPhoto(media, messageID, chatID_onlyPresentIfBot)
       } else if (['.gif', '.gifv', '.mp4'].some(extension => media.endsWith(extension))) {
-        await sendVideo(media, messageID)
+        await sendVideo(media, messageID, chatID_onlyPresentIfBot)
       } else {
         console.log('Unknown', media)
         error()
@@ -382,7 +384,7 @@ export async function newMessage(message) {
       }
     }
     loadingPool[issuerID] = false
-    await deleteMessage(indicatorID)
+    await deleteMessage(indicatorID, chatID_onlyPresentIfBot)
   } catch (err) {
     loadingPool[issuerID] = false
     console.error(err)

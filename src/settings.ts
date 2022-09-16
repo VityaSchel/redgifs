@@ -36,11 +36,12 @@ export const settings: Settings = {
   botUsername: '@citinezpidorasbot',
 
   // resolveAccessHash: false,  
-  globalCommandTimeout: 7
+  globalCommandTimeout: 1
 }
 
 export async function initSettings() {
-  global.api.TARGET_CHANNEL_ID = process.env.NODE_ENV === 'development' ? TEST_CHANNEL_ID : ЗАПРЕЩЕННЫЙ_ПЯТОЧЕК_CHANNEL_ID 
+  const targetMtprotoID = process.env.NODE_ENV === 'development' ? TEST_CHANNEL_ID : ЗАПРЕЩЕННЫЙ_ПЯТОЧЕК_CHANNEL_ID 
+  global.api.TARGET_CHANNEL_ID = settings.platform === 'bot' ? null : targetMtprotoID
   if (settings.platform === 'mtproto') {
     if (settings.resolveAccessHash) {
       const latestDialogs = await global.api.call('messages.getDialogs', {
