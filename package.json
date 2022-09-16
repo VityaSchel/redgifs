@@ -10,7 +10,7 @@
     "postbuild": "cpy '**/*' '!**/*.ts' '../out' --cwd=src --no-overwrite --parents",
     "postinstall": "patch-package",
     "archive": "git archive --format zip -o ../redgifs.zip HEAD",
-    "upload": "scp ../redgifs.zip utidteam.com:/var/www/redgifs.zip"
+    "upload": "scp ../redgifs.zip utidteam:/var/www/redgifs.zip"
   },
   "keywords": [],
   "author": "",

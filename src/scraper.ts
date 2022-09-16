@@ -5,6 +5,7 @@ import $D from 'dedent'
 import { deleteMessage, editMessageText, sendMessage, sendPhoto, sendVideo } from './mocks'
 import { HELP_MESSAGE } from './data/consts'
 import { isTimeout, resetTimeout } from './timeoutManager.js'
+import { settings } from './settings.js'
 
 const loadingPool = {}
 
@@ -155,8 +156,9 @@ async function statsGet() {
 }
 
 export async function newMessage(message) {
-  const text: string = message.message
-  const issuerID: string = message.from_id.user_id
+  const text: string = settings.platform === 'bot' ? message.text : message.message
+  const issuerID: number = settings.platform === 'bot' ? message.from?.id : message.from_id?.user_id
+  const messageID: number = settings.platform === 'bot' ? message.message_id : message.id
 
   if (!issuerID) return false
 
@@ -171,13 +173,13 @@ export async function newMessage(message) {
 
   if(text === '/pornstats') {
     if (!timeoutMiddleware()) return
-    await sendMessage(await statsGet(), message.id)
+    await sendMessage(await statsGet(), messageID)
     return
   }
 
   if(text === '/help') {
     if (!timeoutMiddleware()) return
-    await sendMessage(HELP_MESSAGE, message.id)
+    await sendMessage(HELP_MESSAGE, messageID)
     return
   }
 
@@ -224,19 +226,19 @@ export async function newMessage(message) {
   
   let indicator
   
-  if (message.from_id.id === 1335709879) {
-    await sendMessage('Пошел нахуй, обезьяна', message.id)
+  if (issuerID === 1335709879) {
+    await sendMessage('Пошел нахуй, обезьяна', messageID)
     return
   }
 
   if (loadingPool[issuerID]) {
-    await sendMessage('Подожди пока загрузится предыдущий запрос', message.id)
+    await sendMessage('Подожди пока загрузится предыдущий запрос', messageID)
     return
   } else {
-    indicator = await sendMessage('Загрузка...', message.id)
+    indicator = await sendMessage('Загрузка...', messageID)
   }
 
-  const indicatorID: number | undefined = indicator.updates?.find(update => update._ === 'updateMessageID')?.id
+  const indicatorID: number | undefined = settings.platform === 'bot' ? indicator.message_id : indicator.updates?.find(update => update._ === 'updateMessageID')?.id
 
   const error = () => indicatorID && editMessageText(indicatorID, 'Ошибка :(')
 
@@ -329,7 +331,7 @@ export async function newMessage(message) {
       case '/zoo':
         await stat('cp_zoo_gore')
         loadingPool[issuerID] = false
-        await sendPhoto('AgACAgIAAxkBAAIBaWLyQThnCfAr1IyAX6pB7eII25QBAAJIvjEbuvGZS1B96ifqkC_1AQADAgADeAADKQQ', message.id)
+        await sendPhoto('AgACAgIAAxkBAAIBaWLyQThnCfAr1IyAX6pB7eII25QBAAJIvjEbuvGZS1B96ifqkC_1AQADAgADeAADKQQ', messageID)
         return
 
       case '/milf':
@@ -370,9 +372,9 @@ export async function newMessage(message) {
     }
     for (const media of medias.slice(0, 1)) {
       if (['.png', '.jpg', '.jpeg'].some(extension => media.endsWith(extension))) {
-        await sendPhoto(media, message.id)
+        await sendPhoto(media, messageID)
       } else if (['.gif', '.gifv', '.mp4'].some(extension => media.endsWith(extension))) {
-        await sendVideo(media, message.id)
+        await sendVideo(media, messageID)
       } else {
         console.log('Unknown', media)
         error()
