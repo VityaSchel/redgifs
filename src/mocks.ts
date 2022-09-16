@@ -51,7 +51,7 @@ export async function sendPhoto(photoURL: string, replyMessageID?: number, chatI
 
 export async function sendVideo(videoURL: string, replyMessageID?: number, chatID?: number) {
   if(settings.platform === 'bot') {
-    return await global.botapi.sendVideo(global.api.TARGET_CHANNEL_ID, videoURL, replyMessageID && { reply_to_message_id: replyMessageID })
+    return await global.botapi.sendVideo(chatID ?? global.api.TARGET_CHANNEL_ID, videoURL, replyMessageID && { reply_to_message_id: replyMessageID })
   } else {
     return await global.api.call('messages.sendMedia', {
       peer: mtProtoTargetPeer(),
