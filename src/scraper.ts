@@ -247,26 +247,26 @@ export async function newMessage(message) {
   let medias: string[] = []
   try {
     switch(text) {
-      case '/trap':
-        await stat('trap')
-        medias = await load('tgirls')
-        break
-
-      case '/_trap':
       // case '/trap':
+      // await stat('trap')
+      // medias = await load('tgirls')
+      // break
+
+      // case '/_trap':
+      case '/trap':
         await stat('trap')
         medias = await load('tgirls', 'pushshift')
         break
 
+        // case '/govno':
+        // case '/gavno':
+        //   await stat('govno')
+        //   medias = await load('poop')
+        //   break
+
+      // case '/_govno':
       case '/govno':
       case '/gavno':
-        await stat('govno')
-        medias = await load('poop')
-        break
-
-      case '/_govno':
-      // case '/govno':
-      // case '/gavno':
         await stat('govno')
         medias = await load('poop', 'pushshift')
         break
@@ -288,13 +288,13 @@ export async function newMessage(message) {
         medias = await load('gaybrosgonewild', 'pushshift')
         break
 
-      case '/bdsm':
-        await stat('bdsm')
-        medias = await load('BDSM')
-        break
+        // case '/bdsm':
+        //   await stat('bdsm')
+        //   medias = await load('BDSM')
+        //   break
 
-      case '/_bdsm':
-      // case '/bdsm':
+      // case '/_bdsm':
+      case '/bdsm':
         await stat('bdsm')
         medias = await load('BDSM', 'pushshift')
         break
